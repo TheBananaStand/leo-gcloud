@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4C8DFF"/>
+      <stop offset="1" stop-color="#0B57D0"/>
+    </linearGradient>
+    <linearGradient id="cloud" gradientUnits="userSpaceOnUse" x1="256" y1="161" x2="256" y2="351">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#E4EDFB"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="114" fill="url(#tile)"/>
+  <g fill="url(#cloud)">
+    <circle cx="186" cy="289" r="62"/>
+    <circle cx="258" cy="247" r="86"/>
+    <circle cx="330" cy="293" r="58"/>
+    <rect x="186" y="289" width="144" height="62"/>
+  </g>
+</svg>

@@ -70,6 +70,16 @@ token, cached in memory until a minute before it expires. The key never leaves t
 What the service account's IAM roles allow is the real boundary. This package asks for one
 scope (`cloud-platform`) and then can do exactly what you granted the account, no more.
 
+## Icon
+
+`assets/icon.svg` is the package's artwork — a white cloud on a Google-blue tile, drawn to
+Leo's app-icon shape (512, `rx 114`).
+
+A store entry with no UI bundle has no way to *deliver* artwork to a hub: icons travel
+either compiled into a crate or alongside a bundle's `ui.js`, and an MCP-only package has
+neither. So a fresh install shows the manifest glyph (`cloud`) until someone uploads this
+file on that hub — Settings → Packages → Google Cloud → App Icon.
+
 ## Development
 
 ```bash
