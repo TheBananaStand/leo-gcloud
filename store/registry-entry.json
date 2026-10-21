@@ -1,0 +1,142 @@
+{
+  "name": "gcloud",
+  "label": "Google Cloud",
+  "description": "Google Cloud for the agent — read projects, Compute Engine VMs, Cloud Run services, Storage buckets and objects, Cloud SQL instances, GKE clusters, Cloud Functions, log entries and billing status; and start, stop or reset a VM. Authenticates with its own service-account key, so it sees exactly what that account's IAM roles allow and never borrows anyone's Google login.",
+  "icon": "cloud",
+  "version": "1.0.0",
+  "author": "TheBananaStand",
+  "homepage": "https://github.com/TheBananaStand/leo-gcloud",
+  "category": "package",
+  "mcp": {
+    "transport": "stdio",
+    "command": "npx",
+    "args": [
+      "-y",
+      "https://github.com/TheBananaStand/leo-gcloud/archive/PENDING_PIN.tar.gz"
+    ]
+  },
+  "descriptor": {
+    "details": "Reads Google Cloud through its own service-account key, so it sees exactly what that account's IAM roles allow — roles/viewer for everything read-only, plus roles/compute.instanceAdmin.v1 if you want Leo to be able to start and stop VMs. Nobody's personal Google login is involved, and object contents are never downloaded.",
+    "setup_hint": "In Google Cloud: IAM & Admin → Service Accounts → create one, grant it roles/viewer, then Keys → Add key → JSON. Paste the file's contents below.",
+    "use_cases": [
+      "What's running in the prod project right now?",
+      "Show me the last hour of errors from the API service.",
+      "Stop the build box — I'm done with it.",
+      "Is billing still attached to that project?"
+    ],
+    "fields": [
+      {
+        "key": "gcloud_service_account_json",
+        "label": "Service Account JSON",
+        "field_type": "password",
+        "required": true
+      },
+      {
+        "key": "gcloud_project_id",
+        "label": "Default Project ID",
+        "field_type": "text",
+        "required": false
+      }
+    ],
+    "entitlements": {
+      "settings_read": [
+        "gcloud_service_account_json",
+        "gcloud_project_id"
+      ],
+      "network": [
+        "oauth2.googleapis.com",
+        "cloudresourcemanager.googleapis.com",
+        "compute.googleapis.com",
+        "run.googleapis.com",
+        "storage.googleapis.com",
+        "sqladmin.googleapis.com",
+        "container.googleapis.com",
+        "cloudfunctions.googleapis.com",
+        "logging.googleapis.com",
+        "cloudbilling.googleapis.com"
+      ],
+      "sends": [
+        {
+          "to": "oauth2.googleapis.com",
+          "classes": [
+            "credentials"
+          ],
+          "purpose": "A one-hour assertion signed with your service-account key, exchanged for a short-lived access token. The key itself never leaves this box; the assertion names only the service account and the scope it asks for."
+        },
+        {
+          "to": "cloudresourcemanager.googleapis.com",
+          "classes": [
+            "credentials",
+            "usage"
+          ],
+          "purpose": "The access token, to list the projects that service account can see. Nothing of yours travels with it."
+        },
+        {
+          "to": "compute.googleapis.com",
+          "classes": [
+            "credentials",
+            "usage"
+          ],
+          "purpose": "The access token and a project id to list VMs — and, only when you ask to start, stop or reset one, that instance's name and zone. No disk or VM contents are read."
+        },
+        {
+          "to": "run.googleapis.com",
+          "classes": [
+            "credentials",
+            "usage"
+          ],
+          "purpose": "The access token, a project id and a region, to list Cloud Run services and the images they run."
+        },
+        {
+          "to": "storage.googleapis.com",
+          "classes": [
+            "credentials",
+            "usage"
+          ],
+          "purpose": "The access token, a project id, and the bucket name and name prefix you ask about. Object contents are never downloaded or sent — only names, sizes and types come back."
+        },
+        {
+          "to": "sqladmin.googleapis.com",
+          "classes": [
+            "credentials",
+            "usage"
+          ],
+          "purpose": "The access token and a project id, to list Cloud SQL instances. No database connection is made and no data is read."
+        },
+        {
+          "to": "container.googleapis.com",
+          "classes": [
+            "credentials",
+            "usage"
+          ],
+          "purpose": "The access token and a project id, to list GKE clusters and their versions."
+        },
+        {
+          "to": "cloudfunctions.googleapis.com",
+          "classes": [
+            "credentials",
+            "usage"
+          ],
+          "purpose": "The access token and a project id, to list Cloud Functions and their runtimes."
+        },
+        {
+          "to": "logging.googleapis.com",
+          "classes": [
+            "credentials",
+            "usage",
+            "search_queries"
+          ],
+          "purpose": "The access token, a project id, a time window, and the log filter. Claude writes that filter from your conversation, so it can quote what you said — but no transcript, file or other package's data is attached."
+        },
+        {
+          "to": "cloudbilling.googleapis.com",
+          "classes": [
+            "credentials",
+            "usage"
+          ],
+          "purpose": "The access token and a project id, to read which billing account the project is attached to and whether billing is enabled. No invoices, amounts or payment details are requested."
+        }
+      ]
+    }
+  }
+}
