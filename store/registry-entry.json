@@ -12,7 +12,7 @@
     "command": "npx",
     "args": [
       "-y",
-      "https://github.com/TheBananaStand/leo-gcloud/archive/PENDING_PIN.tar.gz"
+      "https://github.com/TheBananaStand/leo-gcloud/archive/d9ceb95f0d91e5628106d0184af050d03769980d.tar.gz"
     ]
   },
   "descriptor": {
